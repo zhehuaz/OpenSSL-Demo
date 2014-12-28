@@ -83,6 +83,8 @@ int main()
 	printf("User Exit.\n");
     close(conn);
     close(server_sockfd);
+	SSL_free(ssl);
+	SSL_CTX_free(ctx);
 	
     return 0;
 }
