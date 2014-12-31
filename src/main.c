@@ -1,6 +1,6 @@
 /*
-*	Client of OpenSSL
-*	Date:Dec.27th,2014
+*	Client_Demo of OpenSSL
+*	Date:Dec.31th,2014
 *	Author:Langley Chang
 */
 

@@ -1,5 +1,5 @@
 /*
- *	Server Demo of OpenSSL_Demo
+ *	Server Demo of OpenSSL
  *	Date:Dec.31th,2014
  *	Author:Langley Chang
  * */

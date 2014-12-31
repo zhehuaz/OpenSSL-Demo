@@ -1,5 +1,5 @@
 /*
-*	Sever of socket_Lab
+*	Sever Utils of OpenSSL 
 *	Date:Dec 31th,2014
 *	Author:Langley Chang
 */

@@ -1,6 +1,6 @@
 /*
-*	Client of OpenSSL
-*	Date:Dec.27th,2014
+*	Client Utils of OpenSSL
+*	Date:Dec.31th,2014
 *	Author:Langley Chang
 */
 
@@ -13,8 +13,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define SERVERIP "127.0.0.1"
-#define PORT 22087
 #define BUFFER_SIZE 2048
 #define EXIT_IF_TRUE(x) if (x)							\
 	do{													\
