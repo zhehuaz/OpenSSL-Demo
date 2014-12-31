@@ -1,3 +1,9 @@
+/*
+ *	Server Demo of OpenSSL_Demo
+ *	Date:Dec.31th,2014
+ *	Author:Langley Chang
+ * */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
