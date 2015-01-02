@@ -11,7 +11,7 @@ server.o:
 
 #compile client
 main:client.o main.o
-	gcc -o main main.o client.o -lssl -lcrypto
+	gcc -g -o main main.o client.o -lssl -lcrypto
 main.o:client.o
 	gcc -c main.c -o main.o -lssl -lcrypto
 client.o:

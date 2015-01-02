@@ -8,62 +8,50 @@ Only tested in Ubuntu 14.04, OpenSSL 1.0.1j.
 Guide
 ------------
 
-You need to download and install OpenSSL first.
-
+* You need to download and install OpenSSL first.
 
 https://github.com/openssl/openssl
 
-
 Or ubuntu & debian use:
 
-
-sudo apt-get  install openssl
-
+$ sudo apt-get  install openssl
 
 
-Server and Client are now in one folder,and you need to make them only once:
+
+* Server and Client are now in one folder,and you need to make them only once:
+
 $ cd src
 
-
 $ make
-
 
 $ make clean
 
 
 
 
-In fact,the binary file already exits in this folder,maybe you can directly run them :
+* In fact,the binary file already exits in this folder,maybe you can directly run them :
 
 
 $ ./server	#server
-
 
 $ ./main	#client
 
 
 
 
-ip is 127.0.0.1 by default
+* ip is 127.0.0.1 by default, and port is  22087 as you can see in the source
 
-
-port is  22087
-
-
-If you wanna try another ip --- modify the source...
+If you wanna try another ip --- modify the source... ;D
 
 
 
 
-The cacert and privkey used in the program settles in 'OpenSSL-Demo/src' for demo.
-
+* The cacert and privkey used in the program settles in 'OpenSSL-Demo/src' for demo.
 
 If you need your own, try : 
 
 
-
 $ openssl genrsa -des3 -out privkey.pem 2048
-
 
 $ openssl req -new -x509 -key privkey.pem -out cacert.pem -days 365
 
