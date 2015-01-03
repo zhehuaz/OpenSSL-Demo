@@ -1,9 +1,19 @@
 /*
-*	Sever Utils of OpenSSL 
+*	Server Utils of OpenSSL 
 *	Date:Dec 31th,2014
 *	Author:Langley Chang
 */
 
+/*
+ *		This file contains main steps to set an SSL connection in server.
+ *		As a matter of fact,SSL is a protocal between transmission layer and application layer,
+ *	which means you need only set a normal socket connection in TCP or UDP,then submit it to SSL.
+ *	That's all.
+ *		In this file,TCP and IPv4 are used for socket,and SSLv23 for SSL.Feel free to use others for your condition.
+ *	"openssl/bio.h" defines BIO structure.This is a very useful IO type,which contains plenty of types of IO,
+ *	including stdIO,socket and so on.Bound by my power,I didn't use it and set a normal socket,but I 
+ *	strongly recommend you to try it.And if possible,pull your update to my repo,I'll appreciate it. 
+ * */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
