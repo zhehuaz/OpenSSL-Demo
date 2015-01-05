@@ -22,11 +22,12 @@
 	}while(0)
 
 	
+//init the SSL and return SSL_CTX
 SSL_CTX* init_SSL()
 {
 	SSL_CTX* ctx;
 	X509 *client_cert;
-	/* Initializing OpenSSL */
+	// Initializing OpenSSL 
 	SSLeay_add_ssl_algorithms();
 	SSL_load_error_strings();
 	ERR_load_BIO_strings();
@@ -37,17 +38,18 @@ SSL_CTX* init_SSL()
 	return ctx;	
 }
 
-int set_conn(SSL **ssl,SSL_CTX **ctx,char *ip,int port)
+//set ip and port and try to connect the server. 
+int SSL_conn(SSL **ssl,SSL_CTX **ctx,char *ip,int port)
 {
 	// set normal socket connection
 	struct sockaddr_in addr;
 	int nClientFd = socket(AF_INET,SOCK_STREAM,0);
 	int addr_length = 0;
 	struct sockaddr_in nClientAd;
-	nClientAd.sin_family = AF_INET;
-	nClientAd.sin_port = htons(port);
+	nClientAd.sin_family = AF_INET;//IPv4
+	nClientAd.sin_port = htons(port);//port
 	nClientAd.sin_addr.s_addr = inet_addr(ip);
-	connect(nClientFd, (struct sockaddr *)& nClientAd,sizeof(struct sockaddr));
+	EXIT_IF_TRUE(connect(nClientFd, (struct sockaddr *)& nClientAd,sizeof(struct sockaddr)));
 
 	memset(&addr, 0, sizeof(addr));
 	addr_length = sizeof(addr);
@@ -60,7 +62,7 @@ int set_conn(SSL **ssl,SSL_CTX **ctx,char *ip,int port)
 	return nClientFd;
 }
 
-void release(SSL *ssl,SSL_CTX *ctx,int client_fd)
+void SSL_release(SSL *ssl,SSL_CTX *ctx,int client_fd)
 {
 	SSL_free(ssl);
 	SSL_CTX_free(ctx);

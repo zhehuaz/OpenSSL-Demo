@@ -2,7 +2,7 @@ all: srvDemo main
 
 #compile server
 srvDemo:srvDemo.o server.o
-	gcc -o srvDemo srvDemo.o server.o -lssl -lcrypto
+	gcc -g -o srvDemo srvDemo.o server.o -lssl -lcrypto
 srvDemo.o:server.o
 	gcc -c -g srvDemo.c -std=c99 -o srvDemo.o -lssl -lcrypto
 server.o:
@@ -13,9 +13,9 @@ server.o:
 main:client.o main.o
 	gcc -g -o main main.o client.o -lssl -lcrypto
 main.o:client.o
-	gcc -c main.c -o main.o -lssl -lcrypto
+	gcc -c -g main.c -o main.o -lssl -lcrypto
 client.o:
-	gcc -c client.c -o client.o -lssl -lcrypto
+	gcc -c -g client.c -o client.o -lssl -lcrypto
 
 #clean command
 clean:

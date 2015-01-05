@@ -4,16 +4,6 @@
 *	Author:Langley Chang
 */
 
-/*
- *		This file contains main steps to set an SSL connection in server.
- *		As a matter of fact,SSL is a protocal between transmission layer and application layer,
- *	which means you need only set a normal socket connection in TCP or UDP,then submit it to SSL.
- *	That's all.
- *		In this file,TCP and IPv4 are used for socket,and SSLv23 for SSL.Feel free to use others for your condition.
- *	"openssl/bio.h" defines BIO structure.This is a very useful IO type,which contains plenty of types of IO,
- *	including stdIO,socket and so on.Bound by my power,I didn't use it and set a normal socket,but I 
- *	strongly recommend you to try it.And if possible,pull your update to my repo,I'll appreciate it. 
- * */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -31,7 +21,27 @@
 		exit(2);									\
 	}while(0)
 
-SSL_CTX* init_SSL(const char* cert_path,const char* privkey_path)
+
+/*
+ * This file contains main steps to set an SSL connection in server
+ * SSL is a protocal between transmission layer and application layer
+ * It means you need only set a normal socket connection in TCP or UDP,then submit it to SSL
+ * That's all
+ * In this file,TCP and IPv4 are used for socket,and SSLv23 for SSL.Feel free to use others for your condition
+ * 'bio.h' defines BIO structure.This is a very useful IO type,containing plenty of types of IO,including stdIO,socket and so on
+ * Bound by my power,I didn't use it and set a normal socket
+ * But I strongly recommend you to try it.And if possible,pull your update to my repo,I'll appreciate it
+ * */
+
+
+
+
+/*
+ * Input certificate and private key path to init the context of ssl
+ *
+ * if Input is NULL,default file would be used.
+ * */
+SSL_CTX* SSL_init(const char* cert_path,const char* privkey_path)
 {
 	SSL_CTX *ctx = NULL;
 	X509 *client_cert;
@@ -57,36 +67,46 @@ SSL_CTX* init_SSL(const char* cert_path,const char* privkey_path)
 	return ctx;
 }
 
-//bind & listen
-int set_conn(const int port) 
+// bind & listen
+int SSL_set_srv(const int port) 
 {
     int server_sockfd = socket(AF_INET,SOCK_STREAM, 0);
     struct sockaddr_in server_sockaddr;
-    server_sockaddr.sin_family = AF_INET;
-    server_sockaddr.sin_port = htons(port);
-    server_sockaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    EXIT_IF_TRUE(bind(server_sockfd,(struct sockaddr *)&server_sockaddr,sizeof(server_sockaddr))==-1);
-    EXIT_IF_TRUE(listen(server_sockfd,QUEUE) == -1);
+    server_sockaddr.sin_family = AF_INET;// IPv4
+    server_sockaddr.sin_port = htons(port);// set port
+    server_sockaddr.sin_addr.s_addr = htonl(INADDR_ANY);// listen any addresses
+    EXIT_IF_TRUE(bind(server_sockfd,(struct sockaddr *)&server_sockaddr,sizeof(server_sockaddr))==-1);// bind
+    EXIT_IF_TRUE(listen(server_sockfd,QUEUE) == -1);// listen
 
 	return server_sockfd;
 }
 
-//accept
-int accept_s(SSL **ssl,SSL_CTX **ctx,const int server_sockfd,struct sockadd_in* client_addr)
+/* As good as accept()
+ * The funtion 'SSL_accept()' exits already in the 'ssl.h',so I've got to name as SSL_waiting(),containing normal accept()
+ * Be careful SSL and SSL_CTX are double pointers here
+ * when a client connected,the connection is submitted to SSL varible,so the ssl is as good as client_fd(conn) before
+ * the client_fd is returned for further use
+ * */
+int SSL_waiting(SSL **ssl,SSL_CTX **ctx,const int server_sockfd,struct sockadd_in* client_addr)
 {
     socklen_t length = sizeof(client_addr);
-    int conn = accept(server_sockfd, (struct sockaddr*)&client_addr, &length);
-    EXIT_IF_TRUE(conn<0);
+    int client_fd = accept(server_sockfd, (struct sockaddr*)&client_addr, &length);
+    EXIT_IF_TRUE(client_fd<0);
 
-	//submit socket connection to SSL
+	// submit socket connection to SSL
 	EXIT_IF_TRUE(((*ssl) = SSL_new(*ctx)) == NULL);
-	SSL_set_fd((*ssl),conn);
+	SSL_set_fd((*ssl),client_fd);
 	EXIT_IF_TRUE(SSL_accept(*ssl) != 1);
 
-	return conn;
+	return client_fd;
 }
 
-//close
+/*
+ * receive() and send() is not defined.
+ * Just use SSL_read() and SSL_write() instead.
+ * */
+
+// close
 int release(int client_sockfd,int server_sockfd,SSL* ssl,SSL_CTX* ctx)
 {
     close(client_sockfd);
