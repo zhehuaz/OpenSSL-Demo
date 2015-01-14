@@ -36,9 +36,20 @@ int main(int argc,char *argv[])
 	int port = PORT;
 
 	if(argc >= 2)
+	{
 		server_IP = argv[1];
+		//TODO check input here
+	}
 	if(argc >= 3)
+	{
 		port = atoi(argv[2]);
+		if(port > 0xffff || port < 0x4ff)
+		{
+			fprintf(stderr,"port input invalid");
+			exit(2);
+		}
+
+	}
 		
 	// If connected,ssl is generated and able to be used in SSL_write() or SSL_read()
 	int client_fd = SSL_conn(&ssl,&ctx,server_IP,port);
